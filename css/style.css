@@ -1,0 +1,315 @@
+:root {
+  --background-color: rgb(3, 155, 201);
+  --background-darker: rgb(109, 24, 207);
+  --background-darker-transparent: rgba(109, 24, 207, 0.5);
+  --background-darker-less-transparent: rgba(109, 24, 207, 0.7);
+}
+
+html,
+body {
+  background-color: var(--background-color);
+  color: white;
+  margin: 0 0;
+  overflow: hidden;
+  position: relative;
+}
+
+h1 {
+  font-family: "Roboto Condensed", sans-serif;
+  margin: 0 0;
+  font-size: max(4vw, 2.5rem);
+  text-align: center;
+  margin-top: 10px;
+  max-width: 40vw;
+}
+
+#main {
+  font-size: min(8vmin, 55px);
+}
+
+h2 {
+  font-family: "Roboto";
+  margin: 0 0;
+  font-size: 2vw;
+  text-align: center;
+  max-width: 40vw;
+  margin-top: 0.3rem;
+}
+
+h1,
+h2 {
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: hidden;
+  overflow-x: visible;
+}
+.container:before {
+  position: absolute;
+  content: "";
+  box-shadow: inset 0px 0px 150px rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+}
+#credit {
+  color: #000;
+  font-family: "Roboto", sans-serif;
+  font-size: 0.8rem;
+  position: absolute;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  bottom: -2px;
+  right: -2px;
+  opacity: 1;
+  border-radius: 5px;
+  padding: 0.5rem 0.6rem;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 675px) {
+  .dec {
+    display: none;
+  }
+  .container {
+    grid-template-rows: 1fr 3fr;
+    grid-template-columns: 1fr;
+  }
+  .title {
+    margin: 0 0;
+    padding: 0 0;
+    max-height: 100%;
+  }
+  #main,
+  #sub {
+    max-width: 95vw;
+  }
+  .right-container {
+    max-height: 70vh;
+    top: 0px !important;
+  }
+}
+
+#credit:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.hidden {
+  display: none;
+}
+.right-container {
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: hidden;
+  top: 5%;
+  position: relative;
+}
+.selection-box {
+  align-self: center;
+  justify-self: center;
+  width: 90%;
+  background-color: transparent;
+  height: auto;
+  opacity: 0;
+  border-radius: 10px;
+  display: grid;
+  padding: 1rem 1rem;
+  column-gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  max-height: 100%;
+  margin-bottom: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.category {
+  background-color: transparent;
+  color: black;
+  text-align: center;
+  border-radius: 10px;
+  opacity: 1;
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  margin: 0.2rem;
+  padding: 0.3rem;
+  background-color: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+#back {
+  color: black;
+  text-align: center;
+  border-radius: 5px;
+  opacity: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.1rem;
+  margin: 0.2rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--background-darker-transparent);
+  text-align: center;
+}
+
+#back:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  background-color: var(--background-darker-less-transparent);
+}
+
+.category:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.selection-box button {
+  border-radius: 0;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  margin-left: -180%;
+  opacity: 0;
+  overflow-y: visible;
+}
+
+.slide-out {
+  animation-name: slide-out;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.slide-in {
+  animation-name: slide-fade;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+.slide-in-fast {
+  animation-name: slide-fade;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+.fade-in {
+  animation-name: fade;
+  animation-duration: 0.5s;
+  animation-delay: 0.6s;
+  animation-fill-mode: forwards;
+}
+.fade-in-fast {
+  animation-name: fade;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+.fade-out {
+  animation-name: fade-out;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+/* Animations */
+
+@keyframes slide-fade {
+  from {
+    margin-left: -180%;
+    opacity: 0;
+  }
+  to {
+    margin-left: 0px;
+    opacity: 1;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-out {
+  from {
+    margin-left: 0px;
+    opacity: 1;
+  }
+  to {
+    margin-left: -180%;
+    opacity: 0;
+  }
+}
+
+/* Decoration */
+
+#dec-1 {
+  width: 35vw;
+  height: 2vh;
+  background-color: var(--background-darker);
+  margin-top: 10px;
+  -webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+#dec-2 {
+  width: 30vw;
+  height: 2vh;
+  background-color: var(--background-darker);
+  margin-top: 10px;
+  -webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+#dec-3 {
+  width: 25vw;
+  height: 2vh;
+  background-color: var(--background-darker);
+  margin-top: 10px;
+  -webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+#dec-4 {
+  width: 20vw;
+  height: 2vh;
+  background-color: var(--background-darker);
+  margin-top: 10px;
+  -webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+}
+
+#dec-5 {
+  width: 15vw;
+  height: 2vh;
+  background-color: var(--background-darker);
+  margin-top: 10px;
+  -webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.6);
+}
+/*# sourceMappingURL=style.css.map */
