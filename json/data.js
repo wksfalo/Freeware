@@ -3101,7 +3101,7 @@ var data = {
     {
       name: "Useless Website",
       description:
-        "useless (adj) - not fulfilling or not expected to achieve the intended purpose or desired outcome.",
+        "useless (adj.) - not fulfilling or not expected to achieve the intended purpose or desired outcome.",
       link: "https://theuselessweb.com/",
       section: "cheer",
     },
