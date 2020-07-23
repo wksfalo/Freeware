@@ -1,7 +1,9 @@
 // Note: we are storing our UI buttons as nested arrays. Each nested array contains the name, and id, of the button.
 
-// Title object
+//our only global variable, for a nasty workaround for a small bug
+var updating = false;
 
+// Title object
 let title = {
   main: "Freeware & Shareware",
   sub: "The Ultimate List Of Totally Free Software",
@@ -10,6 +12,7 @@ let title = {
   temp_sub: "",
   current_section: "",
   update: function (main, sub, subSize) {
+    updating = true; //nasty workaround for bug
     this.main = main;
     this.sub = sub;
     this.subSize = subSize;
@@ -28,6 +31,7 @@ let title = {
       else $("h2").css("marginTop", "0.3rem");
       ourTitle.removeClass("slide-out");
       ourTitle.addClass("slide-in-fast");
+      updating = false;
     }, 500);
   },
   instantUpdate: function (main, sub, subSize) {
@@ -86,12 +90,25 @@ let options = {
         this.buttons.forEach((button) => {
           let element = document.getElementById(button[1]);
           element.addEventListener("click", func);
+          element.addEventListener("keypress", function (event) {
+            if (event.keyCode === 13) {
+              element.click();
+            }
+          });
           element.addEventListener("mouseover", softwareHover);
+          element.addEventListener("focus", softwareHover);
           element.addEventListener("mouseout", softwareUnHover);
+          element.addEventListener("blur", softwareUnHover);
         });
       } else {
         this.buttons.forEach((button) => {
-          document.getElementById(button[1]).addEventListener("click", func);
+          let element = document.getElementById(button[1]);
+          element.addEventListener("click", func);
+          element.addEventListener("keypress", function (event) {
+            if (event.keyCode === 13) {
+              element.click();
+            }
+          });
         });
       }
       ourBox.removeClass("fade-out");
@@ -124,9 +141,13 @@ let options = {
     this.html = myUtils.divify(this.buttons);
     ourBox.html(this.html);
     this.buttons.forEach((button) => {
-      document
-        .getElementById(button[1])
-        .addEventListener("click", categoriesFunction);
+      let thisButton = document.getElementById(button[1]);
+      thisButton.addEventListener("click", categoriesFunction);
+      thisButton.addEventListener("keypress", function (event) {
+        if (event.keyCode === 13) {
+          thisButton.click();
+        }
+      });
     });
     ourBox.addClass("fade-in");
   },
@@ -156,9 +177,15 @@ let myUtils = {
   },
   divify: function (buttons) {
     let output = "";
-    buttons.forEach((button) => {
-      output += `<div class="category" onselectstart="return false" id="${button[1]}">${button[0]}</div>\n`;
-    });
+    if (isMobileDevice()) {
+      buttons.forEach((button) => {
+        output += `<div class="category" onselectstart="return false" id="${button[1]}">${button[0]}</div>\n`;
+      });
+    } else {
+      buttons.forEach((button) => {
+        output += `<div class="category" tabindex="0" onselectstart="return false" id="${button[1]}">${button[0]}</div>\n`;
+      });
+    }
     return output;
   },
   isOverflown: function (element) {
@@ -236,7 +263,11 @@ function softwareHover(event) {
 */
 function softwareUnHover(event) {
   setTimeout(() => {
-    if ($(".category:hover").length == 0) {
+    if (
+      $(".category:hover").length == 0 &&
+      !$(".category").is(":focus") &&
+      !updating
+    ) {
       title.instantUpdate(
         title.temp_main,
         title.temp_sub,
@@ -250,7 +281,9 @@ function softwareUnHover(event) {
 $(document).ready(() => {
   //Ready up our back button's click function
   let back = $("#back");
-  document.getElementById("back").addEventListener("click", () => {
+  let nativeBack = document.getElementById("back");
+
+  nativeBack.addEventListener("click", () => {
     title.reset();
     options.reset();
     back.removeClass("fade-in fade-in-fast");
@@ -259,11 +292,28 @@ $(document).ready(() => {
       back.addClass("hidden");
     }, 500);
   });
+  nativeBack.addEventListener("keypress", function (event) {
+    if (event.keyCode === 13) {
+      document.getElementById("back").click();
+    }
+  });
 
   //Ready up our credit button's click function
-  document.getElementById("credit").addEventListener("click", () => {
+  let credit = document.getElementById("credit");
+  credit.addEventListener("click", () => {
     window.open("https://github.com/ryan86me");
   });
+  credit.addEventListener("keypress", function (event) {
+    if (event.keyCode === 13) {
+      credit.click();
+    }
+  });
+
+  //Remove tabbability from the back and credit buttons if we're on a mobile phone
+  if (isMobileDevice()) {
+    document.getElementById("back").removeAttribute("tabindex");
+    credit.removeAttribute("tabindex");
+  }
 
   title.initialize();
   options.initialize();
